@@ -10,8 +10,11 @@ client.once('ready', () => {
 })
 
 client.on('message', message => {
-    if (message.content.startsWith(`${prefix}GPQ`)) { //~gpq
+    if (message.content.startsWith(`${prefix}GPQDay`)) { //~gpq
         message.channel.send("Select the best days for you to run (1 - 7 relating to days starting with monday = 1)")
+    }
+    if(message.content.startsWith(`${prefix}GPQTime`))
+    {
         message.channel.send("Select the best times. React here for RESET -")
         message.channel.send("Select the best times. React here for RESET +")
     }
@@ -196,73 +199,32 @@ client.on('message', message => {
                 return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣'].includes(reaction.emoji.name) && user.id != message.author.id;
             }
             const collector = message.createReactionCollector(filter, { time: 86400000 });
-
-            collector.on('collect', (reaction, user) => {
-                switch (reaction.emoji.name) {
-                    case '1️⃣':
-                        Days[0]++;
-                        break;
-                    case '2️⃣':
-                        Days[1]++;
-                        break;
-                    case '3️⃣':
-                        Days[2]++;
-                        break;
-                    case '4️⃣':
-                        Days[3]++;
-                        break;
-                    case '5️⃣':
-                        Days[4]++;
-                        break;
-                    case '6️⃣':
-                        Days[5]++;;
-                        break;
-                    case '7️⃣':
-                        Days[6]++;
-                        break;
-                }
-            })
-
             collector.on('end', collected => {
-                let highestScore = Days[0];
-                let highestScoreDay = 1;
-                let nextScore;
-                for (let i = 1; i < Days.length; i++) {
-                    nextScore = Days[i];
-                    if (nextScore > highestScore) {
-                        highestScoreDay = i + 1;
-                    }
-                }
-                switch (highestScoreDay) {
-                    case 1:
-                        message.channel.send('GPQ Will be run on monday this week!')
-                        break;
-                    case 2:
-                        message.channel.send('GPQ Will be run on tuesday this week!')
-                        break;
-                    case 3:
-                        message.channel.send('GPQ Will be run on wednesday this week!')
-                        break;
-                    case 4:
-                        message.channel.send('GPQ Will be run on thursday this week!')
-                        break;
-                    case 5:
-                        message.channel.send('GPQ Will be run on friday this week!')
-                        break;
-                    case 6:
-                        message.channel.send('GPQ Will be run on saturday this week!')
-                        break;
-                    case 7:
-                        message.channel.send('GPQ Will be run on sunday this week!')
-                        break;
-                    default:
-                        //Error dont hit
-                        break;
-
-                }
+                message.channel.send("GPQ Date voting has finished.");
             })
+        } else if( message.content.startsWith('Select the best times')){
+            message.react('1️⃣')
+                .then(() => message.react('2️⃣'))
+                .then(() => message.react('3️⃣'))
+                .then(() => message.react('4️⃣'))
+                .then(() => message.react('5️⃣'))
+                .then(() => message.react('6️⃣'))
+                .then(() => message.react('7️⃣'))
+                .then(() => message.react('8️⃣'))
+                .then(() => message.react('9️⃣'))
+                .then(() => message.react('🔟'))
+                .then(() => message.react('⏸'))
+                .catch(console.error);
         }
+        const filter = (reaction, user) => {
+            return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⏸'].includes(reaction.emoji.name) && user.id != message.author.id;
+        }
+        const collector = message.createReactionCollector(filter, { time: 86400000 });
+        collector.on('end', collected => {
+            message.channel.send("GPQ Time voting has finished.");
+        })
     }
 })
 
 client.login(process.env.token);
+//
