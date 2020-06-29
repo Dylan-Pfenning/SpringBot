@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+//const { prefix, token } = require('./config.json');
+const prefix = "~";
 const client = new Discord.Client();
 const MaxDPS = 5;
 const MaxSupport = 2;
