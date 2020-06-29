@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
+const MaxDPS = 5;
+const MaxSupport = 2;
 
 client.once('ready', () => {
     console.log('Ready!');
@@ -34,8 +36,10 @@ client.on('message', message => {
             message.react(Cadena);
             const Xenon = client.emojis.cache.find(emoji => emoji.name === 'Xenon');
             message.react(Xenon);
+            const DB = client.emojis.cache.find(emoji=> emoji.name === 'DB');
+            message.react(DB);
             const filter = (reaction, user) => {
-                return [NW.name, NL.name, Phantom.name, Shadower.name, Cadena.name, Xenon.name].includes(reaction.emoji.name) && user.id != message.author.id;
+                return [NW.name, NL.name, Phantom.name, Shadower.name, Cadena.name, Xenon.name, DB.name].includes(reaction.emoji.name) && user.id != message.author.id;
             };
             const collector = message.createReactionCollector(filter, { time: null });
 
