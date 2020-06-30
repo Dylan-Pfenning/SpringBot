@@ -1,38 +1,105 @@
 const Discord = require('discord.js');
 //const { prefix, token } = require('./config.json');
 const prefix = "~";
-const client = new Discord.Client();
+// /const client = new Discord.Client();
 const MaxDPS = 5;
 const MaxSupport = 2;
 var Days = [0, 0, 0, 0, 0, 0, 0];
+var CheckedInMembers = [];
+var BuildingParties = false;
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+
+
+
 
 client.once('ready', () => {
     console.log('Ready!');
 })
 
 client.on('message', message => {
+    // const author = message.guild.members.cache.find(member => member.id === user.id);
     if (message.content.startsWith(`${prefix}GPQDay`)) { //~gpq
         message.channel.send("Select the best days for you to run (1 - 7 relating to days starting with monday = 1)")
     }
-    if(message.content.startsWith(`${prefix}GPQTime`))
-    {
+    if (message.content.startsWith(`${prefix}GPQTime`)) {
         message.channel.send("Select the best times. React here for RESET -")
         message.channel.send("Select the best times. React here for RESET +")
     }
     if (message.content.startsWith(`${prefix}ClassAssigner`)) {
-        message.channel.send("React to the glass you will come to GPQ on");
-        message.channel.send("React here for Thief Classes");
-        message.channel.send("React here for Archer Classes");
-        message.channel.send("React here for Warrior Classes");
-        message.channel.send("React here for Pirate Classes");
-        message.channel.send("React here for Mage Classes");
+        if (message.author.id != '145463495830405120') {
+            console.log("bad author")
+            console.log(message.author.id);
+            return;
+        }
+        message.channel.send("Please React to only the class you'd run GPQ on. If you get a support class role you'll be expected to come on that support class");
+        message.channel.send("Thief Classes");
+        message.channel.send("Archer Classes");
+        message.channel.send("Warrior Classes");
+        message.channel.send("Pirate Classes");
+        message.channel.send("Mage Classes");
     }
     if (message.content.startsWith(`${prefix}MakeParties`)) {
-        message.channel.send("React here to check in for GPQ today")
+        let pingRole = message.guild.roles.cache.find(role => role.name === `GPQ`);
+
+        message.channel.send(`React here to check in for GPQ today <@&${pingRole.id}>`);
+    }
+    if (message.content.startsWith(`${prefix}init`)) {
+        if (message.author.id != '145463495830405120') {
+            console.log("bad author")
+            return;
+        }
+        message.channel.send("Initializing Bot useage by creating class roles...");
+        message.guild.roles.create({ data: { name: 'NW Role' } });
+        message.guild.roles.create({ data: { name: 'NL Role' } });
+        message.guild.roles.create({ data: { name: 'Phantom Role' } });
+        message.guild.roles.create({ data: { name: 'Shadower Role' } });
+        message.guild.roles.create({ data: { name: 'Cadena Role' } });
+        message.guild.roles.create({ data: { name: 'Xenon Role' } });
+        message.guild.roles.create({ data: { name: 'DB Role' } });
+        message.guild.roles.create({ data: { name: 'Hoyoung Role' } });
+        message.guild.roles.create({ data: { name: 'Jett Role' } });
+        message.guild.roles.create({ data: { name: 'Cannoneer Role' } });
+        message.guild.roles.create({ data: { name: 'Mihile Role' } });
+        message.guild.roles.create({ data: { name: 'FP Role' } });
+        message.guild.roles.create({ data: { name: 'Bishop Role' } });
+        message.guild.roles.create({ data: { name: 'Hero Role' } });
+        message.guild.roles.create({ data: { name: 'Illium Role' } });
+        message.guild.roles.create({ data: { name: 'DA Role' } });
+        message.guild.roles.create({ data: { name: 'Aran Role' } });
+        message.guild.roles.create({ data: { name: 'Luminous Role' } });
+        message.guild.roles.create({ data: { name: 'IL Role' } });
+        message.guild.roles.create({ data: { name: 'Adele Role' } });
+        message.guild.roles.create({ data: { name: 'Shade Role' } });
+        message.guild.roles.create({ data: { name: 'TB Role' } });
+        message.guild.roles.create({ data: { name: 'BM Role' } });
+        message.guild.roles.create({ data: { name: 'Hayato Role' } });
+        message.guild.roles.create({ data: { name: 'Mechanic Role' } });
+        message.guild.roles.create({ data: { name: 'Evan Role' } });
+        message.guild.roles.create({ data: { name: 'Bucc Role' } });
+        message.guild.roles.create({ data: { name: 'BT Role' } });
+        message.guild.roles.create({ data: { name: 'AB Role' } });
+        message.guild.roles.create({ data: { name: 'Kaiser Role' } });
+        message.guild.roles.create({ data: { name: 'DK Role' } });
+        message.guild.roles.create({ data: { name: 'Sair Role' } });
+        message.guild.roles.create({ data: { name: 'Kanna Role' } });
+        message.guild.roles.create({ data: { name: 'Paladin Role' } });
+        message.guild.roles.create({ data: { name: 'Kinesis Role' } });
+        message.guild.roles.create({ data: { name: 'DW Role' } });
+        message.guild.roles.create({ data: { name: 'Ark Role' } });
+        message.guild.roles.create({ data: { name: 'Blaster Role' } });
+        message.guild.roles.create({ data: { name: 'DS Role' } });
+        message.guild.roles.create({ data: { name: 'BW Role' } });
+        message.guild.roles.create({ data: { name: 'WH Role' } });
+        message.guild.roles.create({ data: { name: 'Marksman Role' } });
+        message.guild.roles.create({ data: { name: 'Pathfinder Role' } });
+        message.guild.roles.create({ data: { name: 'WA Role' } });
+        message.guild.roles.create({ data: { name: 'Mercedes Role' } });
+        message.guild.roles.create({ data: { name: 'Bowmaster Role' } });
+        message.channel.send("All done!");
     }
     if (message.author.id === '726967340511527063') {
         //Class assigner code
-        if (message.content.startsWith('React here for Thief Classes')) {
+        if (message.content.startsWith('Thief Classes')) {
             const NW = client.emojis.cache.find(emoji => emoji.name === 'NW');
             message.react(NW);
             const NL = client.emojis.cache.find(emoji => emoji.name === 'NL');
@@ -49,18 +116,7 @@ client.on('message', message => {
             message.react(DB);
             const Hoyoung = client.emojis.cache.find(emoji => emoji.name === 'Hoyoung');
             message.react(Hoyoung);
-            const filter = (reaction, user) => {
-                return [NW.name, NL.name, Phantom.name, Shadower.name, Cadena.name, Xenon.name, DB.name, Hoyoung.name].includes(reaction.emoji.name) && user.id != message.author.id;
-            };
-            const collector = message.createReactionCollector(filter, { time: null });
-
-            collector.on('collect', (reaction, user) => {
-                //console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
-                const role = message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
-                const member = message.guild.members.cache.find(member => member.id === user.id);
-                member.roles.add(role);
-            });
-        } else if (message.content.startsWith('React here for Archer Classes')) {
+        } else if (message.content.startsWith('Archer Classes')) {
             const WH = client.emojis.cache.find(emoji => emoji.name === 'WH');
             message.react(WH);
             const Marksman = client.emojis.cache.find(emoji => emoji.name === 'Marksman');
@@ -73,19 +129,7 @@ client.on('message', message => {
             message.react(Mercedes);
             const Bowmaster = client.emojis.cache.find(emoji => emoji.name === 'Bowmaster');
             message.react(Bowmaster);
-
-            const filter = (reaction, user) => {
-                return [WH.name, Marksman.name, Pathfinder.name, WA.name, Mercedes.name, Bowmaster.name].includes(reaction.emoji.name) && user.id != message.author.id;
-            };
-            const collector = message.createReactionCollector(filter, { time: null });
-
-            collector.on('collect', (reaction, user) => {
-                const role = message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
-                const member = message.guild.members.cache.find(member => member.id === user.id);
-                member.roles.add(role);
-            });
-
-        } else if (message.content.startsWith('React here for Warrior Classes')) {
+        } else if (message.content.startsWith('Warrior Classes')) {
             const Hero = client.emojis.cache.find(emoji => emoji.name === 'Hero');
             message.react(Hero);
             const DK = client.emojis.cache.find(emoji => emoji.name === 'DK');
@@ -110,18 +154,7 @@ client.on('message', message => {
             message.react(Adele);
             const Hayato = client.emojis.cache.find(emoji => emoji.name === 'Hayato');
             message.react(Hayato);
-
-            const filter = (reaction, user) => {
-                return [Hero.name, DK.name, Paladin.name, Mihile.name, DW.name, Aran.name, Blaster.name, DA.name, DS.name, Kaiser.name, Adele.name, Hayato.name].includes(reaction.emoji.name) && user.id != message.author.id;
-            };
-            const collector = message.createReactionCollector(filter, { time: null });
-
-            collector.on('collect', (reaction, user) => {
-                const role = message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
-                const member = message.guild.members.cache.find(member => member.id === user.id);
-                member.roles.add(role);
-            });
-        } else if (message.content.startsWith('React here for Pirate Classes')) {
+        } else if (message.content.startsWith('Pirate Classes')) {
             const Bucc = client.emojis.cache.find(emoji => emoji.name === 'Bucc');
             message.react(Bucc);
             const Sair = client.emojis.cache.find(emoji => emoji.name === 'Sair');
@@ -140,18 +173,7 @@ client.on('message', message => {
             message.react(AB);
             const Ark = client.emojis.cache.find(emoji => emoji.name === 'Ark');
             message.react(Ark);
-
-            const filter = (reaction, user) => {
-                return [Bucc.name, Sair.name, Jett.name, TB.name, Shade.name, Mechanic.name, AB.name, Ark.name].includes(reaction.emoji.name) && user.id != message.author.id;
-            };
-            const collector = message.createReactionCollector(filter, { time: null });
-
-            collector.on('collect', (reaction, user) => {
-                const role = message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
-                const member = message.guild.members.cache.find(member => member.id === user.id);
-                member.roles.add(role);
-            });
-        } else if (message.content.startsWith('React here for Mage Classes')) {
+        } else if (message.content.startsWith('Mage Classes')) {
             const Bishop = client.emojis.cache.find(emoji => emoji.name === 'Bishop');
             message.react(Bishop);
             const FP = client.emojis.cache.find(emoji => emoji.name === 'FP');
@@ -176,16 +198,6 @@ client.on('message', message => {
             message.react(BT);
             const Kinesis = client.emojis.cache.find(emoji => emoji.name === 'Kinesis');
             message.react(Kinesis);
-            const filter = (reaction, user) => {
-                return [Bishop.name, FP.name, IL.name, BW.name, DW.name, Evan.name, Luminous.name, BM.name, Illium.name, Kanna.name, BT.name, Kinesis.name].includes(reaction.emoji.name) && user.id != message.author.id;
-            };
-            const collector = message.createReactionCollector(filter, { time: null });
-
-            collector.on('collect', (reaction, user) => {
-                const role = message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
-                const member = message.guild.members.cache.find(member => member.id === user.id);
-                member.roles.add(role).catch(message.channel.send(`You dont have ${reaction.emoji.name} Role`));
-            });
         } else if (message.content.startsWith('Select the best days for you to run')) {
 
             message.react('1️⃣')
@@ -203,7 +215,7 @@ client.on('message', message => {
             collector.on('end', collected => {
                 message.channel.send("GPQ Date voting has finished.");
             })
-        } else if( message.content.startsWith('Select the best times')){
+        } else if (message.content.startsWith('Select the best times')) {
             message.react('1️⃣')
                 .then(() => message.react('2️⃣'))
                 .then(() => message.react('3️⃣'))
@@ -216,16 +228,142 @@ client.on('message', message => {
                 .then(() => message.react('🔟'))
                 .then(() => message.react('⏸'))
                 .catch(console.error);
+            const filter = (reaction, user) => {
+                return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⏸'].includes(reaction.emoji.name) && user.id != message.author.id;
+            }
+            const collector = message.createReactionCollector(filter, { time: 86400000 });
+            collector.on('end', collected => {
+                message.channel.send("GPQ Time voting has finished.");
+            })
+        } else if (message.content.startsWith('React here to check in for GPQ today')) {
+            const Cool = client.emojis.cache.find(emoji => emoji.name === 'dylcool');
+            message.react(Cool);
+            CheckedInMembers = [];
+            BuildingParties = true;
+            const filter = (reaction, user) => {
+                return [Cool.name].includes(reaction.emoji.name) && user.id != message.author.id;
+            }
+            const collector = message.createReactionCollector(filter, { time: 900000 * 4 });
+            //
+
+            collector.on('collect', (reaction, user) => {
+                var addMem = true;
+                const member = message.guild.members.cache.find(member => member.id === user.id);
+
+                if (CheckedInMembers.length <= 1) {
+                    CheckedInMembers.push(member);
+                } else {
+                    CheckedInMembers.forEach(OtherMember => {
+                        if (OtherMember.user.id === member.user.id) {
+                            addMem = false;
+                        }
+                    });
+                    if (addMem == true) {
+                        CheckedInMembers.push(member);
+                    }
+                }
+            });
+
+            collector.on('end', collected => {
+                //console.log(CheckedInMembers.user.username);
+                BuildingParties = false;
+                var Parties = [];
+                var Supports = [];
+                var NumParties = 1;
+                CheckedInMembers.forEach(member => {
+                    if (member.roles.cache.some(role => role.name === 'Kanna Role') || member.roles.cache.some(role => role.name === 'Bishop Role') || member.roles.cache.some(role => role.name === 'BT Role') || member.roles.cache.some(role => role.name === 'BW Role') || member.roles.cache.some(role => role.name === 'BM Role')) {
+                        Supports.push(member);
+                    }
+                });
+                if (CheckedInMembers.length - Supports.length < 6) {
+                    NumParties = 1;
+                } else {
+                    NumParties = (CheckedInMembers.length / 5);
+                }
+                for (let i = 0; i < NumParties; i++) {
+                    Parties[i] = [0]
+                }
+                message.channel.send("Forming Parties now...")
+                CheckedInMembers.forEach(member => {
+                    if (member.roles.cache.some(role => role.name === 'Kanna Role') || member.roles.cache.some(role => role.name === 'Bishop Role') || member.roles.cache.some(role => role.name === 'BT Role') || member.roles.cache.some(role => role.name === 'BW Role') || member.roles.cache.some(role => role.name === 'BM Role')) {
+
+                    } else {
+                        for (let i = 0; i < NumParties; i++) {
+                            //add member to first available party
+                            if (Parties[i][0] < 5) {
+                                Parties[i].push(member);
+                                Parties[i][0]++;
+                                break;
+                            }
+                        }
+                    }
+                });
+                for (let i = 0; i < Parties.length; i++) {
+                    let party = "";
+                    for (let j = 1; j < Parties[i].length; j++) {
+                        //party.concat(Parties[i][j].user.username);
+                        let name = "<@" + Parties[i][j].user.id + ">, ";
+                        party += name;
+                        //party.concat(name);
+                    }
+                    message.channel.send(`Party #${i + 1} ${party}`);
+                }
+                let supportList = "";
+                Supports.forEach(member => {
+                    let name = "<@" + member.user.id + ">, "
+                    supportList += name;
+                });
+                message.channel.send(`Supports to be placed; ${supportList}`);
+            })
         }
-        const filter = (reaction, user) => {
-            return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⏸'].includes(reaction.emoji.name) && user.id != message.author.id;
-        }
-        const collector = message.createReactionCollector(filter, { time: 86400000 });
-        collector.on('end', collected => {
-            message.channel.send("GPQ Time voting has finished.");
-        })
+
     }
 })
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (reaction.message.partial) {
+        try {
+            await reaction.message.fetch();
+        } catch (error) {
+            console.log('Something went wrong when fetching the message: ', error);
+        }
+    }
+    if (reaction.message.author.id === user.id) {
+        return;
+    }
+    if (reaction.message.content.startsWith('Thief Classes') || reaction.message.content.startsWith('Archer Classes') || reaction.message.content.startsWith('Warrior Classes') || reaction.message.content.startsWith('Pirate Classes') || reaction.message.content.startsWith('Mage Classes')) {
+        const role = reaction.message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
+        const member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+        member.roles.add(role);
+    }
+});
+
+client.on("messageReactionRemove", async (reaction, user) => {
+    if (reaction.message.partial) {
+        try {
+            await reaction.message.fetch();
+        } catch (error) {
+            console.log('Something went wrong when fetching the message: ', error);
+        }
+    }
+
+    if (reaction.message.content.startsWith('Thief Classes') || reaction.message.content.startsWith('Archer Classes') || reaction.message.content.startsWith('Warrior Classes') || reaction.message.content.startsWith('Pirate Classes') || reaction.message.content.startsWith('Mage Classes')) {
+        //remove role
+        const role = reaction.message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
+        const member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+        member.roles.remove(role);
+    } else if (reaction.message.content.startsWith('React here to check in for GPQ today ')) {
+        if (BuildingParties == true) {
+            for (let i = 0; i < CheckedInMembers.length; i++) {
+                if(CheckedInMembers[i].user.id === user.id){
+                    CheckedInMembers.splice(i)
+                }
+            }
+
+        }
+
+    }
+});
 
 client.login(process.env.token);
 //
