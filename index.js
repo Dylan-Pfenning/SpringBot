@@ -16,6 +16,7 @@ client.once('ready', () => {
 })
 
 client.on('message', message => {
+    if(message.channel instanceof Discord.DMChannel) return;
     // const author = message.guild.members.cache.find(member => member.id === user.id);
     if (message.content.startsWith(`${prefix}GPQDay`)) { //~gpq
         var sender = message.guild.members.cache.find(member => member.id === message.author.id);
