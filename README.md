@@ -1,5 +1,6 @@
 # SpringBot
 Spring bot is a discord bot created to make party creation for Maplestory's Guild Party Quest easier
+
 Link to add the bot to your discord; https://discordapp.com/oauth2/authorize?client_id=726967340511527063&scope=bot&permissions=2080898299
 ## Setting up the bot
 1. Create a roll with the name 'Goon'. The bot will only listen to commands from people who have this role so I recommend giving it to the people who organize GPQ for your guild
