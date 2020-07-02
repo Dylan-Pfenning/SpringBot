@@ -16,33 +16,24 @@ client.once('ready', () => {
 })
 
 client.on('message', message => {
-    if(message.channel instanceof Discord.DMChannel) return;
+    if (message.channel instanceof Discord.DMChannel) return;
     // const author = message.guild.members.cache.find(member => member.id === user.id);
     if (message.content.startsWith(`${prefix}GPQDay`)) { //~gpq
         var sender = message.guild.members.cache.find(member => member.id === message.author.id);
         if (sender.roles.cache.some(role => role.name === `Goon`)) {
-            message.channel.send("Select the best days for you to run (1 - 7 relating to days starting with monday = 1)")
+            var pingRole = message.guild.roles.cache.find(role => role.name === `GPQ`);
+            message.channel.send(`Select the best days for you to run (1 - 7 relating to days starting with monday = 1) <@&${pingRole.id}>`)
         }
     }
     if (message.content.startsWith(`${prefix}GPQTime`)) {
         var sender = message.guild.members.cache.find(member => member.id === message.author.id);
         if (sender.roles.cache.some(role => role.name === `Goon`)) {
+            var pingRole = message.guild.roles.cache.find(role => role.name === `GPQ`);
+            message.channel.send(`<@&${pingRole.id}>`)
             message.channel.send("Select the best times. React here for RESET -")
             message.channel.send("Select the best times. React here for RESET +")
         }
 
-    }
-    if (message.content.startsWith(`${prefix}ClassAssigner`)) {
-        var sender = message.guild.members.cache.find(member => member.id === message.author.id);
-        if (sender.roles.cache.some(role => role.name === `Goon`)) {
-
-            message.channel.send("Please React to only the class you'd run GPQ on. If you get a support class role you'll be expected to come on that support class");
-            message.channel.send("Thief Classes");
-            message.channel.send("Archer Classes");
-            message.channel.send("Warrior Classes");
-            message.channel.send("Pirate Classes");
-            message.channel.send("Mage Classes");
-        }
     }
     if (message.content.startsWith(`${prefix}MakeParties`)) {
         /*
@@ -56,57 +47,209 @@ client.on('message', message => {
             message.channel.send(`React here to check in for GPQ today <@&${pingRole.id}>`);
         }
     }
-    if (message.content.startsWith(`${prefix}init`)) {
+    if (message.content.startsWith(`${prefix}ClassAssigner`)) {
         var sender = message.guild.members.cache.find(member => member.id === message.author.id);
         if (sender.roles.cache.some(role => role.name === `Goon`)) {
 
+            message.channel.send("Please React to only the class you'd run GPQ on. If you get a support class role you'll be expected to come on that support class");
+            message.channel.send("Thief Classes");
+            message.channel.send("Archer Classes");
+            message.channel.send("Warrior Classes");
+            message.channel.send("Pirate Classes");
+            message.channel.send("Mage Classes");
+        }
+    }
+    if (message.content.startsWith(`${prefix}GPQRoleAssigner`)) {
+        var sender = message.guild.members.cache.find(member => member.id === message.author.id);
+        if (sender.roles.cache.some(role => role.name === `Goon`)) {
+            message.channel.send(`React here to be pinged for GPQ!`)
+        }
+    }
+    if (message.content.startsWith(`${prefix}init`)) {
+        var sender = message.guild.members.cache.find(member => member.id === message.author.id);
+        if (sender.roles.cache.some(role => role.name === `Goon`)) {
             message.channel.send("Initializing Bot useage by creating class roles...");
-            message.guild.roles.create({ data: { name: 'NW Role' } });
-            message.guild.roles.create({ data: { name: 'NL Role' } });
-            message.guild.roles.create({ data: { name: 'Phantom Role' } });
-            message.guild.roles.create({ data: { name: 'Shadower Role' } });
-            message.guild.roles.create({ data: { name: 'Cadena Role' } });
-            message.guild.roles.create({ data: { name: 'Xenon Role' } });
-            message.guild.roles.create({ data: { name: 'DB Role' } });
-            message.guild.roles.create({ data: { name: 'Hoyoung Role' } });
-            message.guild.roles.create({ data: { name: 'Jett Role' } });
-            message.guild.roles.create({ data: { name: 'Cannoneer Role' } });
-            message.guild.roles.create({ data: { name: 'Mihile Role' } });
-            message.guild.roles.create({ data: { name: 'FP Role' } });
-            message.guild.roles.create({ data: { name: 'Bishop Role' } });
-            message.guild.roles.create({ data: { name: 'Hero Role' } });
-            message.guild.roles.create({ data: { name: 'Illium Role' } });
-            message.guild.roles.create({ data: { name: 'DA Role' } });
-            message.guild.roles.create({ data: { name: 'Aran Role' } });
-            message.guild.roles.create({ data: { name: 'Luminous Role' } });
-            message.guild.roles.create({ data: { name: 'IL Role' } });
-            message.guild.roles.create({ data: { name: 'Adele Role' } });
-            message.guild.roles.create({ data: { name: 'Shade Role' } });
-            message.guild.roles.create({ data: { name: 'TB Role' } });
-            message.guild.roles.create({ data: { name: 'BM Role' } });
-            message.guild.roles.create({ data: { name: 'Hayato Role' } });
-            message.guild.roles.create({ data: { name: 'Mechanic Role' } });
-            message.guild.roles.create({ data: { name: 'Evan Role' } });
-            message.guild.roles.create({ data: { name: 'Bucc Role' } });
-            message.guild.roles.create({ data: { name: 'BT Role' } });
-            message.guild.roles.create({ data: { name: 'AB Role' } });
-            message.guild.roles.create({ data: { name: 'Kaiser Role' } });
-            message.guild.roles.create({ data: { name: 'DK Role' } });
-            message.guild.roles.create({ data: { name: 'Sair Role' } });
-            message.guild.roles.create({ data: { name: 'Kanna Role' } });
-            message.guild.roles.create({ data: { name: 'Paladin Role' } });
-            message.guild.roles.create({ data: { name: 'Kinesis Role' } });
-            message.guild.roles.create({ data: { name: 'DW Role' } });
-            message.guild.roles.create({ data: { name: 'Ark Role' } });
-            message.guild.roles.create({ data: { name: 'Blaster Role' } });
-            message.guild.roles.create({ data: { name: 'DS Role' } });
-            message.guild.roles.create({ data: { name: 'BW Role' } });
-            message.guild.roles.create({ data: { name: 'WH Role' } });
-            message.guild.roles.create({ data: { name: 'Marksman Role' } });
-            message.guild.roles.create({ data: { name: 'Pathfinder Role' } });
-            message.guild.roles.create({ data: { name: 'WA Role' } });
-            message.guild.roles.create({ data: { name: 'Mercedes Role' } });
-            message.guild.roles.create({ data: { name: 'Bowmaster Role' } });
+            if (!message.guild.roles.cache.find(role => role.name === 'GPQ')) {
+                message.guild.roles.create({ data: { name: 'GPQ' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'NW Role')) {
+                message.guild.roles.create({ data: { name: 'NW Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'NL Role')) {
+
+                message.guild.roles.create({ data: { name: 'NL Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Phantom Role')) {
+
+                message.guild.roles.create({ data: { name: 'Phantom Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Shadower Role')) {
+
+                message.guild.roles.create({ data: { name: 'Shadower Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Cadena Role')) {
+
+                message.guild.roles.create({ data: { name: 'Cadena Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Xenon Role')) {
+
+                message.guild.roles.create({ data: { name: 'Xenon Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'DB Role')) {
+
+                message.guild.roles.create({ data: { name: 'DB Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Hoyoung Role')) {
+
+                message.guild.roles.create({ data: { name: 'Hoyoung Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Jett Role')) {
+
+                message.guild.roles.create({ data: { name: 'Jett Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Cannoneer Role')) {
+
+                message.guild.roles.create({ data: { name: 'Cannoneer Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Mihile Role')) {
+
+                message.guild.roles.create({ data: { name: 'Mihile Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'FP Role')) {
+
+                message.guild.roles.create({ data: { name: 'FP Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Bishop Role')) {
+                message.guild.roles.create({ data: { name: 'Bishop Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Hero Role')) {
+
+                message.guild.roles.create({ data: { name: 'Hero Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Illium Role')) {
+
+                message.guild.roles.create({ data: { name: 'Illium Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'DA Role')) {
+
+                message.guild.roles.create({ data: { name: 'DA Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Aran Role')) {
+
+                message.guild.roles.create({ data: { name: 'Aran Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Luminous Role')) {
+
+                message.guild.roles.create({ data: { name: 'Luminous Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'IL Role')) {
+
+                message.guild.roles.create({ data: { name: 'IL Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Adele Role')) {
+
+                message.guild.roles.create({ data: { name: 'Adele Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Shade Role')) {
+
+                message.guild.roles.create({ data: { name: 'Shade Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'TB Role')) {
+
+                message.guild.roles.create({ data: { name: 'TB Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'BM Role')) {
+
+                message.guild.roles.create({ data: { name: 'BM Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Hayato Role')) {
+
+                message.guild.roles.create({ data: { name: 'Hayato Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Mechanic Role')) {
+
+                message.guild.roles.create({ data: { name: 'Mechanic Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Evan Role')) {
+
+                message.guild.roles.create({ data: { name: 'Evan Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Bucc Role')) {
+
+                message.guild.roles.create({ data: { name: 'Bucc Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'BT Role')) {
+
+                message.guild.roles.create({ data: { name: 'BT Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'AB Role')) {
+
+                message.guild.roles.create({ data: { name: 'AB Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Kaiser Role')) {
+
+                message.guild.roles.create({ data: { name: 'Kaiser Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'DK Role')) {
+
+                message.guild.roles.create({ data: { name: 'DK Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Sair Role')) {
+
+                message.guild.roles.create({ data: { name: 'Sair Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Kanna Role')) {
+
+                message.guild.roles.create({ data: { name: 'Kanna Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Paladin Role')) {
+
+                message.guild.roles.create({ data: { name: 'Paladin Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Kinesis Role')) {
+
+                message.guild.roles.create({ data: { name: 'Kinesis Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'DW Role')) {
+
+                message.guild.roles.create({ data: { name: 'DW Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Ark Role')) {
+
+                message.guild.roles.create({ data: { name: 'Ark Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Blaster Role')) {
+
+                message.guild.roles.create({ data: { name: 'Blaster Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'DS Role')) {
+
+                message.guild.roles.create({ data: { name: 'DS Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'BW Role')) {
+
+                message.guild.roles.create({ data: { name: 'BW Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'WH Role')) {
+
+                message.guild.roles.create({ data: { name: 'WH Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Marksman Role')) {
+                message.guild.roles.create({ data: { name: 'Marksman Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Pathfinder Role')) {
+                message.guild.roles.create({ data: { name: 'Pathfinder Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'WA Role')) {
+                message.guild.roles.create({ data: { name: 'WA Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Mercedes Role')) {
+                message.guild.roles.create({ data: { name: 'Mercedes Role' } });
+            }
+            if (!message.guild.roles.cache.find(role => role.name === 'Bowmaster Role')) {
+                message.guild.roles.create({ data: { name: 'Bowmaster Role' } });
+            }
+
             message.channel.send("All done!");
         }
     }
@@ -328,6 +471,9 @@ client.on('message', message => {
                 });
                 message.channel.send(`Supports to be placed; ${supportList}`);
             })
+        } else if (message.content.startsWith('React here to be pinged for GPQ!')) {
+            const GPQ = client.emojis.cache.find(emoji => emoji.name === 'patrick');
+            message.react(GPQ);
         }
 
     }
@@ -348,6 +494,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
         const role = reaction.message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
         const member = reaction.message.guild.members.cache.find(member => member.id === user.id);
         member.roles.add(role);
+    } else if (reaction.message.content.startsWith('React here to be pinged for GPQ!')) {
+        const role = reaction.message.guild.roles.cache.find(role => role.name === 'GPQ');
+        const member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+        member.roles.add(role);
     }
 });
 
@@ -365,7 +515,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
         const role = reaction.message.guild.roles.cache.find(role => role.name === `${reaction.emoji.name} Role`);
         const member = reaction.message.guild.members.cache.find(member => member.id === user.id);
         member.roles.remove(role);
-    } else if (reaction.message.content.startsWith('React here to check in for GPQ today ')) {
+    } else if (reaction.message.content.startsWith('React here to check in for GPQ today')) {
         if (BuildingParties == true) {
             for (let i = 0; i < CheckedInMembers.length; i++) {
                 if (CheckedInMembers[i].user.id === user.id) {
@@ -375,8 +525,12 @@ client.on("messageReactionRemove", async (reaction, user) => {
 
         }
 
+    } else if (reaction.message.content.startsWith('React here to be pinged for GPQ!')) {
+        const role = reaction.message.guild.roles.cache.find(role => role.name === 'GPQ');
+        const member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+        member.roles.remove(role);
     }
 });
 
 client.login(process.env.token);
-//
+//process.env.token
