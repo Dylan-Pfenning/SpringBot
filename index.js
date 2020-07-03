@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
-//const prefix = "~";
+//const { prefix, token } = require('./config.json');
+const prefix = "~";
 const MaxDPS = 5;
 const MaxSupport = 2;
 var Days = [0, 0, 0, 0, 0, 0, 0];
@@ -540,5 +540,5 @@ client.on("messageReactionRemove", async (reaction, user) => {
     }
 });
 
-client.login(token);
+client.login(process.env.token);
 //process.env.token
