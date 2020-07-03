@@ -44,7 +44,9 @@ client.on('message', message => {
         if (sender.roles.cache.some(role => role.name === `Goon`)) {
             var pingRole = message.guild.roles.cache.find(role => role.name === `GPQ`);
 
-            message.channel.send(`React here to check in for GPQ today <@&${pingRole.id}>`);
+            message.channel.send(`React here to check in for GPQ today <@&${pingRole.id}>`).then( msg =>{
+                msg.delete(3600000 + 900000).catch(console.error);
+            })
         }
     }
     if (message.content.startsWith(`${prefix}ClassAssigner`)) {
@@ -458,7 +460,9 @@ client.on('message', message => {
                     let name = "<@" + member.user.id + ">, "
                     supportList += name;
                 });
-                message.channel.send(`Supports to be placed; ${supportList}`);
+                message.channel.send(`Supports to be placed; ${supportList}`).then(msg =>{
+                    msg.delete(1800000);
+                }).catch(console.error);
             })
         } else if (message.content.startsWith('React here to be pinged for GPQ!')) {
             const GPQ = client.emojis.cache.find(emoji => emoji.name === 'patrick');
