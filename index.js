@@ -1,12 +1,14 @@
 const Discord = require('discord.js');
-//const { prefix, token } = require('./config.json');
-const prefix = "~";
+const { prefix, token } = require('./config.json');
+//const prefix = "~";
 const MaxDPS = 5;
 const MaxSupport = 2;
 var Days = [0, 0, 0, 0, 0, 0, 0];
 var CheckedInMembers = [];
 var BuildingParties = false;
 const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION'] });
+
+var collectorActive = false;
 
 
 
@@ -43,9 +45,8 @@ client.on('message', message => {
         var sender = message.guild.members.cache.find(member => member.id === message.author.id);
         if (sender.roles.cache.some(role => role.name === `Goon`)) {
             var pingRole = message.guild.roles.cache.find(role => role.name === `GPQ`);
-
-            message.channel.send(`React here to check in for GPQ today <@&${pingRole.id}>`).then( msg =>{
-                msg.delete(3600000 + 900000).catch(console.error);
+            message.channel.send(`React here to check in for GPQ today <@&${pingRole.id}>`).then(msg => {
+                msg.delete({timeout: 900000 * 4});
             })
         }
     }
@@ -391,7 +392,8 @@ client.on('message', message => {
                 return [Cool.name].includes(reaction.emoji.name) && user.id != message.author.id;
             }
             const collector = message.createReactionCollector(filter, { time: 900000 * 4 });
-            //
+            
+            collectorActive = true;
 
             collector.on('collect', (reaction, user) => {
                 var addMem = true;
@@ -410,9 +412,11 @@ client.on('message', message => {
                     }
                 }
             });
-
+           
             collector.on('end', collected => {
+                collector.stop();
                 //console.log(CheckedInMembers.user.username);
+                if (collectorActive == false) return;
                 BuildingParties = false;
                 var Parties = [];
                 var Supports = [];
@@ -430,7 +434,9 @@ client.on('message', message => {
                 for (let i = 0; i < NumParties; i++) {
                     Parties[i] = [0]
                 }
-                message.channel.send("Forming Parties now...")
+                message.channel.send("Forming Parties now...").then(msg => {
+                    msg.delete({ timeout: 1800000 });
+                }).catch(console.error);
                 CheckedInMembers.forEach(member => {
                     if (member.roles.cache.some(role => role.name === 'Kanna Role') || member.roles.cache.some(role => role.name === 'Bishop Role') || member.roles.cache.some(role => role.name === 'BT Role') || member.roles.cache.some(role => role.name === 'BW Role') || member.roles.cache.some(role => role.name === 'BM Role')) {
 
@@ -453,16 +459,25 @@ client.on('message', message => {
                         party += name;
                         //party.concat(name);
                     }
-                    message.channel.send(`Party #${i + 1} ${party}`);
+                    if (collectorActive == true) {
+                        message.channel.send(`Party #${i + 1} ${party}`).then(msg => {
+                            msg.delete({ timeout: 1800000 });
+                        }).catch(console.error);
+
+                    }
                 }
                 let supportList = "";
                 Supports.forEach(member => {
                     let name = "<@" + member.user.id + ">, "
                     supportList += name;
                 });
-                message.channel.send(`Supports to be placed; ${supportList}`).then(msg =>{
-                    msg.delete(1800000);
-                }).catch(console.error);
+                if (collectorActive == true) {
+                    message.channel.send(`Supports to be placed; ${supportList}`).then(msg => {
+                        msg.delete({ timeout: 1800000 });
+                    }).catch(console.error);
+                }
+                CheckedInMembers = [];
+                collectorActive = false;
             })
         } else if (message.content.startsWith('React here to be pinged for GPQ!')) {
             const GPQ = client.emojis.cache.find(emoji => emoji.name === 'patrick');
@@ -525,5 +540,5 @@ client.on("messageReactionRemove", async (reaction, user) => {
     }
 });
 
-client.login(process.env.token);
+client.login(token);
 //process.env.token
