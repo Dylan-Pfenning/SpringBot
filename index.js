@@ -364,15 +364,10 @@ client.on('message', message => {
                 .then(() => message.react('6️⃣'))
                 .then(() => message.react('7️⃣'))
                 .catch(console.error);
-            const filter = (reaction, user) => {
-                return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣'].includes(reaction.emoji.name) && user.id != message.author.id;
-            }
-            const collector = message.createReactionCollector(filter, { time: 86400000 });
-            collector.on('end', collected => {
-                message.channel.send("GPQ Date voting has finished.");
-            })
+
         } else if (message.content.startsWith('Select the best times')) {
-            message.react('1️⃣')
+            message.react('0️⃣')
+                .then(() => message.react('1️⃣'))
                 .then(() => message.react('2️⃣'))
                 .then(() => message.react('3️⃣'))
                 .then(() => message.react('4️⃣'))
@@ -384,15 +379,9 @@ client.on('message', message => {
                 .then(() => message.react('🔟'))
                 .then(() => message.react('⏸'))
                 .catch(console.error);
-            const filter = (reaction, user) => {
-                return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '⏸'].includes(reaction.emoji.name) && user.id != message.author.id;
-            }
-            const collector = message.createReactionCollector(filter, { time: 86400000 });
-            collector.on('end', collected => {
-                message.channel.send("GPQ Time voting has finished.");
-            })
+
         } else if (message.content.startsWith('React here to check in for GPQ today')) {
-            const Cool = client.emojis.cache.find(emoji => emoji.name === 'dylcool');
+            const Cool = client.emojis.cache.find(emoji => emoji.name === 'dylSpring');
             message.react(Cool);
             CheckedInMembers = [];
             BuildingParties = true;
