@@ -391,8 +391,8 @@ client.on('message', message => {
             const filter = (reaction, user) => {
                 return [Cool.name].includes(reaction.emoji.name) && user.id != message.author.id;
             }
-            const collector = message.createReactionCollector(filter, { time: 900000 * 4 });
-            
+            const collector = message.createReactionCollector(filter, { time: 1200000  });
+            //900000 * 4
             collectorActive = true;
 
             collector.on('collect', (reaction, user) => {
